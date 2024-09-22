@@ -11,13 +11,14 @@ jobs:
     strategy:
       matrix:
         biome-version: [1.9.2]
+        os: [alpine]
         include:
-          - alpine-version: 3.20
-            dockerfile: alpine.Dockerfile
-            tag-suffix: alpine3.20
-          - alpine-version: 3.19
-            dockerfile: alpine.Dockerfile
-            tag-suffix: alpine3.19
+          - os: alpine
+            alpine-version: 3.20
+            suffix: alpine3.20
+          - os: alpine
+            alpine-version: 3.19
+            suffix: alpine3.19
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,7 +37,7 @@ jobs:
             ghcr.io/nhedger/biome
           flavor: |
             latest=auto
-            suffix=-${{ matrix.tag-suffix }}
+            suffix=-${{ matrix.os }}-${{ matrix.suffix }}
           tags: |
             type=sha
             type=semver,pattern={{major}},value=${{ matrix.biome-version }}
@@ -48,7 +49,7 @@ jobs:
         with:
           push: false
           tags: ${{ steps.meta.outputs.tags }} 
-          file: ${{ matrix.dockerfile }}
+          file: ${{ matrix.os }}.Dockerfile
           build-args: |
             BIOME_VERSION=${{ matrix.biome-version }}
             ALPINE_VERSION=${{ matrix.alpine-version }}

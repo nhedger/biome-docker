@@ -8,6 +8,7 @@ import { coerce, gte } from "semver";
 const versions = (await getAllVersions(false))
 	?.map((v) => coerce(v))
 	.filter((v) => v !== null)
-	.filter((v) => gte(v, "1.0.0"));
+	.filter((v) => gte(v, "1.0.0"))
+	.map((v) => v.format());
 
 console.log(JSON.stringify(versions));

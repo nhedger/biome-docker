@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        biome-version: ["1.9.2"]
+        biome-version: ["1.9.2", "1.9.1", "1.9.0", "1.8.4", "1.8.3", "1.8.2", "1.8.1", "1.8.0"]
         os:
           - name: alpine
             version: "3.20"
@@ -49,10 +49,18 @@ jobs:
             type=semver,pattern={{major}}.{{minor}},value=${{ matrix.biome-version }}
             type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.biome-version }}
 
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push
         uses: docker/build-push-action@v6
+        id: push
         with:
-          push: false
+          push: true
           tags: ${{ steps.meta.outputs.tags }} 
           file: ${{ matrix.os.name }}.Dockerfile
           build-args: |

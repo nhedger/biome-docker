@@ -25,6 +25,7 @@ jobs:
           echo "BIOME_VERSIONS=$BIOME_VERSIONS" >> $GITHUB_OUTPUT
 
   build-images:
+    name: Build ${{ matrix.biome-version.version }}
     needs: generate-matrix
     permissions:
       packages: write

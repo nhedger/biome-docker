@@ -12,8 +12,8 @@ jobs:
       matrix:
         biome-version: ["1.9.2"]
         os: [alpine, debian]
-        alpine-version: ["3.20", "3.19"]
-        debian-version: ["bookworm", "bullseye"]
+        # alpine-version: ["3.20", "3.19"]
+        # debian-version: ["bookworm", "bullseye"]
         include:
           - os: alpine
             alpine-version: "3.20"

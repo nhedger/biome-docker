@@ -54,7 +54,7 @@ jobs:
         with:
           push: false
           tags: ${{ steps.meta.outputs.tags }} 
-          file: ${{ matrix.os }}.Dockerfile
+          file: ${{ matrix.os.name }}.Dockerfile
           build-args: |
             BIOME_VERSION=${{ matrix.biome-version }}
             ALPINE_VERSION=${{ matrix.os.version }}

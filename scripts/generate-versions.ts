@@ -6,7 +6,7 @@ const yankedVersions: string[] = [];
 const semverVersions = ((await getAllVersions(false)) ?? [])
 	?.map((v) => coerce(v))
 	.filter((v) => v !== null)
-	.filter((v) => gte(v, "1.4.0"))
+	.filter((v) => gte(v, "1.7.0"))
 	.filter((v) => !yankedVersions.includes(v.format()));
 
 const getGreatestMinorForMajor = (versions: SemVer[]): Map<string, string> => {

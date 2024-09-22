@@ -65,8 +65,10 @@ jobs:
             latest=auto
             suffix=-${{ matrix.os.suffix }}
           tags: |
-            type=sha
-            type=semver,pattern={{version}},value=${{ matrix.biome-version }}
+            type=semver,pattern={{version}},value=${{ matrix.biome-version.version }}
+            type=raw,value=${{ matrix.biome-version.majorVersion }},enable=${{ matrix.biome-version.version != matrix.biome-version.patchVersion }}
+            type=raw,value=${{ matrix.biome-version.minorVersion }},enable=${{ matrix.biome-version.version != matrix.biome-version.patchVersion }}
+            type=raw,value=latest,enable=${{ matrix.biome-version == fromJson(needs.generate-matrix.outputs.biome-versions)[0] && matrix.os.name == 'debian' && matrix.os.version == 'bookworm' }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -80,8 +82,12 @@ jobs:
         id: push
         with:
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }} 
-          file: ${{ matrix.os.name }}.Dockerfile
+          file: docker/${{ matrix.os.name }}.Dockerfile
+          context: ./docker
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             BIOME_VERSION=${{ matrix.biome-version }}
             ALPINE_VERSION=${{ matrix.os.version }}

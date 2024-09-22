@@ -10,15 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        biome-version: [1.9.2]
+        biome-version: ["1.9.2"]
         os: [alpine]
-        alpine-version: [3.20, 3.19]
+        alpine-version: ["3.20", "3.19"]
         include:
           - os: alpine
-            alpine-version: 3.20
+            alpine-version: "3.20"
             suffix: alpine3.20
           - os: alpine
-            alpine-version: 3.19
+            alpine-version: "3.19"
             suffix: alpine3.19
     steps:
       - name: Checkout

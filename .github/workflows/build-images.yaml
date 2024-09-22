@@ -25,7 +25,7 @@ jobs:
           echo "BIOME_VERSIONS=$BIOME_VERSIONS" >> $GITHUB_OUTPUT
 
   build-images:
-    name: Build ${{ matrix.biome-version.version }}
+    name: Build ${{ matrix.biome-version.version }} (${{ matrix.os.name }}, ${{ matrix.os.version }})
     needs: generate-matrix
     permissions:
       packages: write
@@ -90,6 +90,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            BIOME_VERSION=${{ matrix.biome-version }}
+            BIOME_VERSION=${{ matrix.biome-version.version }}
             ALPINE_VERSION=${{ matrix.os.version }}
             DEBIAN_VERSION=${{ matrix.os.version }}

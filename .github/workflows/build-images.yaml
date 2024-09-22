@@ -6,13 +6,30 @@ on:
       - main
 
 jobs:
+
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      biome-versions: ${{ steps.matrix.outputs.BIOME_VERSIONS }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+      - name: Generate matrix
+        id: matrix
+        run: |
+          BIOME_VERSIONS=$(bun run ./scripts/generate-versions.ts)
+          echo "BIOME_VERSIONS=$BIOME_VERSIONS" >> $GITHUB_OUTPUT
+
   build-images:
+    needs: generate-matrix
     permissions:
       packages: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        biome-version: ["1.9.2", "1.9.1", "1.9.0", "1.8.3", "1.8.2", "1.8.1", "1.8.0"]
+        biome-version: ${{ fromJson(needs.generate-matrix.outputs.biome-versions) }}
         os:
           - name: alpine
             version: "3.20"
@@ -47,9 +64,7 @@ jobs:
             suffix=-${{ matrix.os.suffix }}
           tags: |
             type=sha
-            type=semver,pattern={{major}},value=${{ matrix.biome-version }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ matrix.biome-version }}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.biome-version }}
+            type=semver,pattern={{version}},value=${{ matrix.biome-version }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3

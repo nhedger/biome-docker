@@ -11,22 +11,19 @@ jobs:
     strategy:
       matrix:
         biome-version: ["1.9.2"]
-        os: [alpine, debian]
-        # alpine-version: ["3.20", "3.19"]
-        # debian-version: ["bookworm", "bullseye"]
-        include:
-          - os: alpine
-            alpine-version: "3.20"
-            suffix: alpine3.20
-          - os: alpine
-            alpine-version: "3.19"
-            suffix: alpine3.19
-          - os: debian
-            debian-version: "bookworm"
-            suffix: bookworm
-          - os: debian
-            debian-version: "bullseye"
-            suffix: bullseye
+        os:
+          - name: alpine
+            version: "3.20"
+            suffix: "alpine3.20"
+          - name: alpine
+            version: "3.19"
+            suffix: "alpine3.19"
+          - name: debian
+            version: "bookworm"
+            suffix: "bookworm"
+          - name: debian
+            version: "bullseye"
+            suffix: "bullseye"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,7 +42,7 @@ jobs:
             ghcr.io/nhedger/biome
           flavor: |
             latest=auto
-            suffix=-${{ matrix.os }}-${{ matrix.suffix }}
+            suffix=-${{ matrix.os.suffix }}
           tags: |
             type=sha
             type=semver,pattern={{major}},value=${{ matrix.biome-version }}
@@ -60,5 +57,5 @@ jobs:
           file: ${{ matrix.os }}.Dockerfile
           build-args: |
             BIOME_VERSION=${{ matrix.biome-version }}
-            ALPINE_VERSION=${{ matrix.alpine-version }}
-            DEBIAN_VERSION=${{ matrix.debian-version }}
+            ALPINE_VERSION=${{ matrix.os.version }}
+            DEBIAN_VERSION=${{ matrix.os.version }}

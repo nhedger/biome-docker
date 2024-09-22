@@ -11,8 +11,9 @@ jobs:
     strategy:
       matrix:
         biome-version: ["1.9.2"]
-        os: [alpine]
+        os: [alpine, debian]
         alpine-version: ["3.20", "3.19"]
+        debian-version: ["bookworm", "bullseye"]
         include:
           - os: alpine
             alpine-version: "3.20"
@@ -20,6 +21,12 @@ jobs:
           - os: alpine
             alpine-version: "3.19"
             suffix: alpine3.19
+          - os: debian
+            debian-version: "bookworm"
+            suffix: bookworm
+          - os: debian
+            debian-version: "bullseye"
+            suffix: bullseye
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,3 +61,4 @@ jobs:
           build-args: |
             BIOME_VERSION=${{ matrix.biome-version }}
             ALPINE_VERSION=${{ matrix.alpine-version }}
+            DEBIAN_VERSION=${{ matrix.debian-version }}

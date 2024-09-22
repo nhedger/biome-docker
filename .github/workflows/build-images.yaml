@@ -21,10 +21,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -36,7 +39,9 @@ jobs:
             suffix=-${{ matrix.tag-suffix }}
           tags: |
             type=sha
-            type=raw,value=${{ matrix.biome-version }}
+            type=semver,pattern={{major}},value=${{ matrix.biome-version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ matrix.biome-version }}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.biome-version }}
 
       - name: Build and push
         uses: docker/build-push-action@v6

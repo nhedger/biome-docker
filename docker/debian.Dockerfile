@@ -21,4 +21,6 @@ FROM debian:${DEBIAN_VERSION} AS biome
 
 COPY --from=builder /usr/src/biome/target/release/biome /usr/local/bin/biome
 
+WORKDIR /workspace
+
 ENTRYPOINT [ "/usr/local/bin/biome" ]

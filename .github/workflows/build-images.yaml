@@ -72,7 +72,7 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=semver,pattern={{version}},value=${{ matrix.biome-version.version }}${{ matrix.os.suffix }}
+            type=raw,value=${{ matrix.biome-version.version }}${{ matrix.os.suffix }}
             type=raw,value=${{ matrix.biome-version.version }},enable=${{ matrix.os.suffix == 'bookworm' }}
 
             type=raw,value=${{ matrix.biome-version.majorAlias }}${{ matrix.os.suffix }},enable=${{ matrix.biome-version.createMajorAlias }}

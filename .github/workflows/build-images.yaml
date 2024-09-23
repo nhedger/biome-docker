@@ -63,7 +63,7 @@ jobs:
           images: |
             ghcr.io/nhedger/biome
           flavor: |
-            latest=auto
+            latest=off
             suffix=-${{ matrix.os.suffix }}
           tags: |
             type=semver,pattern={{version}},value=${{ matrix.biome-version.version }}

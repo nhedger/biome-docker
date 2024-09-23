@@ -78,6 +78,8 @@ jobs:
             type=raw,value=${{ matrix.biome-version.version }}-${{ matrix.os.suffix }}
             type=raw,value=${{ matrix.biome-version.version }},enable=${{ matrix.os.suffix == 'bookworm' }}
 
+            type=raw,value=${{ matrix.biome-version.version }}-alpine,enable=${{ matrix.os.suffix == 'alpine3.20' }}
+
             type=raw,value=${{ matrix.biome-version.majorAlias }}-${{ matrix.os.suffix }},enable=${{ matrix.biome-version.createMajorAlias }}
             type=raw,value=${{ matrix.biome-version.majorAlias }},enable=${{ matrix.biome-version.createMajorAlias && matrix.os.suffix == 'bookworm' }}
 

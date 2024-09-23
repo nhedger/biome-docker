@@ -21,12 +21,22 @@ ghcr.io/biomejs/biome:{version}-{variant}
 
 Where `{variant}` is one of the following: `bookworm`, `bullseye`, `alpine3.20`, `alpine3.19`.
 
-Examples:
+### Examples
+- `ghcr.io/biomejs/biome:1`
+- `ghcr.io/biomejs/biome:1.9`
 - `ghcr.io/biomejs/biome:1.9.2`
+- `ghcr.io/biomejs/biome:1-bookworm`
+- `ghcr.io/biomejs/biome:1.9-bookworm`
 - `ghcr.io/biomejs/biome:1.9.2-bookworm`
+- `ghcr.io/biomejs/biome:1-bullseye`
+- `ghcr.io/biomejs/biome:1.9-bullseye`
 - `ghcr.io/biomejs/biome:1.9.2-bullseye`
-- `ghcr.io/biomejs/biome:1.9.2-alpine3.20`
+- `ghcr.io/biomejs/biome:1-alpine3.19`
+- `ghcr.io/biomejs/biome:1.9-alpine3.19`
 - `ghcr.io/biomejs/biome:1.9.2-alpine3.19`
+- `ghcr.io/biomejs/biome:1-alpine3.20`
+- `ghcr.io/biomejs/biome:1.9-alpine3.20`
+- `ghcr.io/biomejs/biome:1.9.2-alpine3.20`
 
 ## Usage
 

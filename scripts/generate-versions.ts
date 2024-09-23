@@ -1,5 +1,5 @@
 import { getAllVersions } from "@biomejs/version-utils";
-import { type SemVer, coerce, gt, gte, lt, maxSatisfying } from "semver";
+import { type SemVer, coerce, gt, gte } from "semver";
 
 const yankedVersions: string[] = [];
 

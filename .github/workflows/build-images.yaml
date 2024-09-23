@@ -72,13 +72,13 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=raw,value=${{ matrix.biome-version.version }}${{ matrix.os.suffix }}
+            type=raw,value=${{ matrix.biome-version.version }}-${{ matrix.os.suffix }}
             type=raw,value=${{ matrix.biome-version.version }},enable=${{ matrix.os.suffix == 'bookworm' }}
 
-            type=raw,value=${{ matrix.biome-version.majorAlias }}${{ matrix.os.suffix }},enable=${{ matrix.biome-version.createMajorAlias }}
+            type=raw,value=${{ matrix.biome-version.majorAlias }}-${{ matrix.os.suffix }},enable=${{ matrix.biome-version.createMajorAlias }}
             type=raw,value=${{ matrix.biome-version.majorAlias }},enable=${{ matrix.biome-version.createMajorAlias && matrix.os.suffix == 'bookworm' }}
 
-            type=raw,value=${{ matrix.biome-version.minorAlias }}${{ matrix.os.suffix }},enable=${{ matrix.biome-version.createMinorAlias }}
+            type=raw,value=${{ matrix.biome-version.minorAlias }}-${{ matrix.os.suffix }},enable=${{ matrix.biome-version.createMinorAlias }}
             type=raw,value=${{ matrix.biome-version.minorAlias }},enable=${{ matrix.biome-version.createMinorAlias && matrix.os.suffix == 'bookworm' }}
 
             type=raw,value=latest,enable=${{ matrix.biome-version.version == fromJson(needs.generate-jobs.outputs.biome-versions)[0].version && matrix.os.name == 'debian' && matrix.os.version == 'bookworm' }}

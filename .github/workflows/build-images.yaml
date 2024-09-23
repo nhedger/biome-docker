@@ -32,7 +32,7 @@ jobs:
           echo "BIOME_VERSIONS=$BIOME_VERSIONS" >> $GITHUB_OUTPUT
 
   build-images:
-    name: Build ${{ matrix.biome-version.version }} (${{ matrix.os.name }}, ${{ matrix.os.version }})
+    name: Biome ${{ matrix.biome-version.version }} (${{ matrix.os.name }}, ${{ matrix.os.version }})
     needs: generate-jobs
     permissions:
       packages: write
@@ -71,7 +71,7 @@ jobs:
             ghcr.io/nhedger/biome
           flavor: |
             latest=false
-            suffix=-${{ matrix.os.suffix }},onlatest=false
+            suffix=${{ matrix.os.suffix != 'bookworm' && format('-{0}', matrix.os.suffix) || '' }},onlatest=false
           tags: |
             type=semver,pattern={{version}},value=${{ matrix.biome-version.version }}
             type=raw,value=${{ matrix.biome-version.majorAlias }},enable=${{ matrix.biome-version.createMajorAlias }}

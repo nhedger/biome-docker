@@ -1,13 +1,20 @@
 name: Build Docker images
 
 on:
+  schedule:
+    # run every sunday at midnight
+    - cron: "0 0 * * 0"
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
 jobs:
 
-  generate-matrix:
+  generate-jobs:
+    name: Generate jobs
     runs-on: ubuntu-latest
     outputs:
       biome-versions: ${{ steps.matrix.outputs.BIOME_VERSIONS }}
@@ -26,13 +33,13 @@ jobs:
 
   build-images:
     name: Build ${{ matrix.biome-version.version }} (${{ matrix.os.name }}, ${{ matrix.os.version }})
-    needs: generate-matrix
+    needs: generate-jobs
     permissions:
       packages: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        biome-version: ${{ fromJson(needs.generate-matrix.outputs.biome-versions) }}
+        biome-version: ${{ fromJson(needs.generate-jobs.outputs.biome-versions) }}
         os:
           - name: alpine
             version: "3.20"
@@ -64,12 +71,12 @@ jobs:
             ghcr.io/nhedger/biome
           flavor: |
             latest=false
-            suffix=-${{ matrix.os.suffix }}
+            suffix=-${{ matrix.os.suffix }},onlatest=false
           tags: |
             type=semver,pattern={{version}},value=${{ matrix.biome-version.version }}
             type=raw,value=${{ matrix.biome-version.majorVersion }},enable=${{ matrix.biome-version.version == matrix.biome-version.patchVersion }}
             type=raw,value=${{ matrix.biome-version.minorVersion }},enable=${{ matrix.biome-version.version == matrix.biome-version.patchVersion }}
-            type=raw,value=latest,enable=${{ matrix.biome-version.version == fromJson(needs.generate-matrix.outputs.biome-versions)[0].version && matrix.os.name == 'debian' && matrix.os.version == 'bookworm' }}
+            type=raw,value=latest,enable=${{ matrix.biome-version.version == fromJson(needs.generate-jobs.outputs.biome-versions)[0].version && matrix.os.name == 'debian' && matrix.os.version == 'bookworm' }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3

@@ -1,5 +1,5 @@
 import { getAllVersions } from "@biomejs/version-utils";
-import { coerce, gt, gte, major, type SemVer } from "semver";
+import { type SemVer, coerce, gt, gte, lt, maxSatisfying } from "semver";
 
 const yankedVersions: string[] = [];
 
@@ -23,10 +23,7 @@ const getGreatestMinorForMajor = (versions: SemVer[]): Map<string, string> => {
 		}
 
 		if (!greatestMinorVersionForMajor.has(`${semver.major}`)) {
-			greatestMinorVersionForMajor.set(
-				`${semver.major}`,
-				`${semver.major}.${semver.minor}`,
-			);
+			greatestMinorVersionForMajor.set(`${semver.major}`, version.format());
 		} else {
 			const newMax = coerce(
 				greatestMinorVersionForMajor.get(`${semver.major}`),
@@ -37,10 +34,7 @@ const getGreatestMinorForMajor = (versions: SemVer[]): Map<string, string> => {
 			}
 
 			if (gt(semver, newMax)) {
-				greatestMinorVersionForMajor.set(
-					`${semver.major}`,
-					`${semver.major}.${semver.minor}`,
-				);
+				greatestMinorVersionForMajor.set(`${semver.major}`, version.format());
 			}
 		}
 	}
@@ -99,11 +93,13 @@ const greatestPatchForMajorMinor =
  */
 export const versions = semverVersions.map((version) => ({
 	version: version.format(),
-	majorVersion: version.major,
-	minorVersion: greatestMinorForMajor.get(`${version.major}`),
-	patchVersion: greatestPatchForMajorMinor.get(
-		`${version.major}.${version.minor}`,
-	),
+	majorAlias: `${version.major}`,
+	createMajorAlias:
+		greatestMinorForMajor.get(`${version.major}`) === version.format(),
+	minorAlias: `${version.major}.${version.minor}`,
+	createMinorAlias:
+		greatestPatchForMajorMinor.get(`${version.major}.${version.minor}`) ===
+		version.format(),
 }));
 
 console.log(JSON.stringify(versions));

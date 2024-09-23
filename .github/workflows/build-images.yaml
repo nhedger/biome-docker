@@ -36,7 +36,7 @@ jobs:
   build-images:
     name: Biome ${{ matrix.biome-version.version }} (${{ matrix.os.name }}, ${{ matrix.os.version }})
     needs: generate-jobs
-    concurrency: build-images
+    concurrency: build-images-${{ matrix.biome-version.version }}-${{ matrix.os.name }}-${{ matrix.os.version }}
     permissions:
       packages: write
     runs-on: ubuntu-latest
